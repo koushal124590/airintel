@@ -1,6 +1,6 @@
 // ── Real-time AQI Data Layer ──
-// Uses Open-Meteo (free, no key) combined with a station-generation algorithm 
-// to simulate a dense, realistic network of 100+ sensors across India matching actual real-world conditions.
+// Uses WAQI (World Air Quality Index) API for real-time station data across India.
+// Requires VITE_WAQI_TOKEN in .env file.
 
 export interface StationData {
   uid: number;
@@ -31,7 +31,7 @@ export const STATUS_STYLES: Record<StationData['statusColor'], { text: string; b
   hazardous:            { text: 'text-[#b71c1c]',  bg: 'bg-[#b71c1c]',  bgOp: 'bg-[#b71c1c]/10',  border: 'border-[#b71c1c]/20',  hex: '#ef5350' },
 };
 
-// Major Indian hubs
+// Major Indian cities for the forecast dropdown
 export const MAJOR_CITIES = [
   { name: 'Delhi', lat: 28.6139, lng: 77.2090 },
   { name: 'Mumbai', lat: 19.0760, lng: 72.8777 },
@@ -48,73 +48,53 @@ export const MAJOR_CITIES = [
   { name: 'Patna', lat: 25.6093, lng: 85.1376 },
   { name: 'Varanasi', lat: 25.3176, lng: 82.9739 },
   { name: 'Guwahati', lat: 26.1445, lng: 91.7362 },
-  { name: 'Indore', lat: 22.7196, lng: 75.8577 },
-  { name: 'Nagpur', lat: 21.1458, lng: 79.0882 },
-  { name: 'Coimbatore', lat: 11.0168, lng: 76.9558 },
-  { name: 'Bhopal', lat: 23.2599, lng: 77.4126 },
-  { name: 'Agra', lat: 27.1767, lng: 78.0081 },
 ];
 
-const STATION_SUFFIXES = ['Central', 'Industrial Area', 'Residential Zone', 'University Campus'];
-
-// Fetch simulated station data based on real Open-Meteo city baselines
+// Fetch ALL monitoring stations within India's bounding box using real WAQI API
 export async function fetchIndiaStations(): Promise<StationData[]> {
-  const lats = MAJOR_CITIES.map(c => c.lat).join(',');
-  const lngs = MAJOR_CITIES.map(c => c.lng).join(',');
+  const token = import.meta.env.VITE_WAQI_TOKEN;
   
-  // We use Open-Meteo's actual current data for the 20 major cities
-  const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lats}&longitude=${lngs}&current=us_aqi&timezone=auto`;
+  if (!token || token === 'demo') {
+    console.error("VITE_WAQI_TOKEN is missing or set to demo.");
+    return [];
+  }
+
+  // India bounding box: lat 6.5-35.5, lng 68.1-97.4
+  const url = `https://api.waqi.info/v2/map/bounds?latlng=6.5,68.1,35.5,97.4&networks=all&token=${token}`;
   
   try {
     const res = await fetch(url);
-    const data = await res.json();
-    const results: any[] = Array.isArray(data) ? data : [data];
-    const stations: StationData[] = [];
-    let uidCounter = 1000;
+    const json = await res.json();
 
-    const timeStr = new Date().toISOString();
+    if (json.status !== 'ok' || !Array.isArray(json.data)) {
+      console.error('WAQI API error:', json);
+      return [];
+    }
 
-    MAJOR_CITIES.forEach((city, index) => {
-      const baseAqiRaw = results[index]?.current?.us_aqi || 50;
-      
-      // Open-Meteo often reports lower AQI than ground sensors in India.
-      // We apply a realistic multiplier and baseline offset to match actual Indian ground conditions (e.g., 150-300+ in North India).
-      const isNorthIndia = city.lat > 25; 
-      const realisticBaseAqi = isNorthIndia ? (baseAqiRaw * 1.8) + 40 : (baseAqiRaw * 1.4) + 10;
-
-      // Generate 4 local stations per major city to create a dense network
-      for (let i = 0; i < 4; i++) {
-        // Add random jitter to simulate micro-local variations (+/- 15%)
-        const jitter = 1 + (Math.random() * 0.3 - 0.15);
-        const finalAqi = Math.max(10, Math.round(realisticBaseAqi * jitter));
-        
-        // Slightly offset the coordinates around the city center
-        const latOffset = (Math.random() - 0.5) * 0.15;
-        const lngOffset = (Math.random() - 0.5) * 0.15;
-
-        const st = getAqiStatus(finalAqi);
-        
-        stations.push({
-          uid: uidCounter++,
-          aqi: finalAqi,
-          lat: city.lat + latOffset,
-          lng: city.lng + lngOffset,
-          name: `${city.name} - ${STATION_SUFFIXES[i]}`,
-          time: timeStr,
+    return json.data
+      .filter((s: any) => s.aqi && s.aqi !== '-' && !isNaN(Number(s.aqi)))
+      .map((s: any) => {
+        const aqi = Number(s.aqi);
+        const st = getAqiStatus(aqi);
+        return {
+          uid: s.uid,
+          aqi,
+          lat: s.lat,
+          lng: s.lon,
+          name: s.station?.name || 'Unknown Station',
+          time: s.station?.time || '',
           status: st.label,
           statusColor: st.color,
-        });
-      }
-    });
-
-    return stations.sort((a, b) => b.aqi - a.aqi);
+        };
+      })
+      .sort((a: StationData, b: StationData) => b.aqi - a.aqi);
   } catch (err) {
-    console.error("Failed to fetch stations:", err);
+    console.error("Failed to fetch WAQI stations:", err);
     return [];
   }
 }
 
-// Fetch hourly forecast for a single location (used for the Dashboard graph)
+// Open-Meteo is still used for 48-hour forecasting since WAQI doesn't provide hourly future forecasts for free
 export async function fetchHourlyForecast(lat: number, lng: number, pastDays = 1, forecastDays = 2) {
   const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lng}&current=us_aqi,pm2_5,pm10,nitrogen_dioxide,ozone,sulphur_dioxide,carbon_monoxide&hourly=us_aqi,pm2_5,pm10,nitrogen_dioxide&timezone=auto&past_days=${pastDays}&forecast_days=${forecastDays}`;
   const res = await fetch(url);

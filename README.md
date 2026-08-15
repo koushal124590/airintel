@@ -29,7 +29,6 @@
       </ul>
     </li>
     <li><a href="#features">Features</a></li>
-    <li><a href="#license">License</a></li>
   </ol>
 </details>
 
@@ -77,10 +76,6 @@ To get a local copy up and running, follow these simple steps.
 - 🤖 **Gemini AI Insights:** Automated reasoning summarizing complex environmental and traffic data into simple, actionable alerts.
 - 🗺️ **Neighborhood Risk Map:** A simulated, geospatial view of city zones, allowing hyper-local interventions like dust-suppression deployment.
 - 📱 **Mobile-Ready:** Fully responsive interface featuring a mobile shell navigation system.
-
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB

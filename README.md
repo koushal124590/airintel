@@ -6,9 +6,9 @@
     <strong>Municipal AI Platform for Environmental Intelligence</strong>
     <br />
     <br />
-    <a href="https://github.com/your-username/airintel/issues">Report Bug</a>
+    <a href="https://github.com/koushal124590/airintel/issues">Report Bug</a>
     ·
-    <a href="https://github.com/your-username/airintel/issues">Request Feature</a>
+    <a href="https://github.com/koushal124590/airintel/issues">Request Feature</a>
   </p>
 </div>
 
@@ -59,7 +59,7 @@ To get a local copy up and running, follow these simple steps.
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/your-username/airintel.git
+   git clone https://github.com/koushal124590/airintel.git
    ```
 2. Install NPM packages
    ```sh

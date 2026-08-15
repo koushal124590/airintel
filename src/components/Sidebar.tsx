@@ -41,15 +41,15 @@ export default function Sidebar() {
                 key={item.label}
                 to={item.to}
                 className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
+                  `flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-200 group ${
                     isActive
-                      ? 'text-primary font-bold bg-primary/10 scale-[0.98]'
-                      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50'
+                      ? 'text-primary font-bold bg-primary/10 shadow-sm border border-primary/10'
+                      : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/50 border border-transparent'
                   }`
                 }
               >
-                <span className="material-symbols-outlined">{item.icon}</span>
-                <span className="font-label-sm text-label-sm">{item.label}</span>
+                <span className="material-symbols-outlined text-[22px] transition-transform group-hover:scale-110">{item.icon}</span>
+                <span className="font-label-md text-label-md">{item.label}</span>
               </NavLink>
             ))}
           </nav>
@@ -76,22 +76,22 @@ export default function Sidebar() {
             to={item.to}
             className={({ isActive }) =>
               item.isPrimary
-                ? `flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full p-2 w-16 h-16 -mt-8 shadow-lg scale-90 duration-150 border-4 border-background ${isActive ? '' : ''}`
-                : `flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-variant rounded-lg relative w-12 h-12 transition-colors ${
-                    isActive ? 'bg-surface-variant' : ''
+                ? `flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full p-2 w-16 h-16 -mt-6 shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 border-[6px] border-background ${isActive ? 'ring-2 ring-primary/50' : ''}`
+                : `flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-variant rounded-xl relative w-14 h-14 transition-all duration-200 ${
+                    isActive ? 'bg-surface-variant text-on-surface font-semibold scale-105' : ''
                   }`
             }
           >
             {({ isActive }) => (
               <>
-                <span className="material-symbols-outlined" style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}>
+                <span className="material-symbols-outlined text-[24px]" style={isActive ? { fontVariationSettings: "'FILL' 1" } : {}}>
                   {item.icon}
                 </span>
                 {item.hasAlert && (
-                  <span className="absolute top-2 right-3 w-2 h-2 bg-error rounded-full"></span>
+                  <span className="absolute top-2 right-3 w-2.5 h-2.5 bg-error rounded-full border-2 border-surface-container"></span>
                 )}
                 {!item.isPrimary && (
-                  <span className={`font-label-sm text-[10px] leading-tight mt-1 ${isActive ? 'font-semibold' : ''} ${item.label === 'Home' && isActive ? 'mt-0.5' : ''}`}>
+                  <span className={`font-label-sm text-[11px] leading-tight mt-1 ${isActive ? 'font-bold' : 'font-medium'}`}>
                     {item.label}
                   </span>
                 )}

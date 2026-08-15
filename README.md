@@ -36,6 +36,16 @@
 
 **AirIntel - CleanAir Sentinel** is a modern, responsive web application designed for municipal governments to monitor, predict, and manage urban air quality using AI models (e.g., Gemini). It provides actionable insights and forecasts to help city administrators intervene before pollution reaches critical levels.
 
+### Previews
+
+<div align="center">
+  <img src="docs/dashboard.png" alt="Dashboard Preview" width="800" />
+  <br/><br/>
+  <img src="docs/forecast.png" alt="AI Forecast Preview" width="800" />
+  <br/><br/>
+  <img src="docs/map.png" alt="Neighborhood Map Preview" width="800" />
+</div>
+
 ### Built With
 
 * [![React][React.js]][React-url]

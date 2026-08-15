@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from 'recharts';
 import { format } from 'date-fns';
+import { fetchHourlyForecast } from '../data/cities';
 
 export default function Analytics() {
   const [hourlyData, setHourlyData] = useState<any[]>([]);
@@ -9,9 +10,7 @@ export default function Analytics() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const url = "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=28.4744&longitude=77.5040&hourly=us_aqi,pm2_5,pm10,nitrogen_dioxide&timezone=auto&past_days=3&forecast_days=1";
-        const res = await fetch(url);
-        const raw = await res.json();
+        const raw = await fetchHourlyForecast(28.6139, 77.2090, 3, 1);
 
         const formatted = raw.hourly.time.map((t: string, i: number) => ({
           time: new Date(t),

@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { format } from 'date-fns';
-import { INDIAN_CITIES, fetchHourlyForecast } from '../data/cities';
+import { MAJOR_CITIES, fetchHourlyForecast } from '../data/cities';
 
 export default function AIForecast() {
   const [hourly, setHourly] = useState<any[]>([]);
-  const [selectedCity, setSelectedCity] = useState(INDIAN_CITIES[0]); // Delhi by default
+  const [selectedCity, setSelectedCity] = useState(MAJOR_CITIES[0]); // Delhi by default
   const [loading, setLoading] = useState(true);
   const [chartLoading, setChartLoading] = useState(false);
   const [currentData, setCurrentData] = useState<any>(null);
@@ -52,16 +52,16 @@ export default function AIForecast() {
         </div>
         {/* City selector */}
         <select
-          value={selectedCity.id}
+          value={selectedCity.name}
           onChange={e => {
-            const c = INDIAN_CITIES.find(c => c.id === e.target.value);
+            const c = MAJOR_CITIES.find(city => city.name === e.target.value);
             if (c) setSelectedCity(c);
           }}
           className="bg-surface-container border border-outline-variant/20 rounded-xl px-4 py-2.5 text-on-surface focus:ring-2 focus:ring-primary/30 focus:border-primary/40 outline-none transition-all w-full md:w-64"
           style={{ fontFamily: 'Inter, sans-serif', fontSize: 13 }}
         >
-          {INDIAN_CITIES.map(c => (
-            <option key={c.id} value={c.id}>{c.name}, {c.state}</option>
+          {MAJOR_CITIES.map(c => (
+            <option key={c.name} value={c.name}>{c.name}</option>
           ))}
         </select>
       </div>

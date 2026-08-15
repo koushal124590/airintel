@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { INDIAN_CITIES, fetchCitiesAQI, fetchHourlyForecast, type CityAQI } from '../data/cities';
+import { fetchIndiaStations, fetchHourlyForecast, type StationData } from '../data/cities';
 
 export default function AIInsights() {
-  const [cities, setCities] = useState<CityAQI[]>([]);
+  const [cities, setCities] = useState<StationData[]>([]);
   const [currentData, setCurrentData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
@@ -10,10 +10,10 @@ export default function AIInsights() {
     async function load() {
       try {
         const [cityData, delhiRaw] = await Promise.all([
-          fetchCitiesAQI(INDIAN_CITIES),
+          fetchIndiaStations(),
           fetchHourlyForecast(28.6139, 77.2090), // Delhi for detailed pollutant data
         ]);
-        setCities(cityData.sort((a, b) => b.aqi - a.aqi));
+        setCities(cityData.filter(s => s.aqi > 0).sort((a: StationData, b: StationData) => b.aqi - a.aqi));
         setCurrentData(delhiRaw.current);
       } catch (e) { console.error(e); }
       finally { setLoading(false); }
@@ -22,7 +22,7 @@ export default function AIInsights() {
   }, []);
 
   const avgAqi = cities.length ? Math.round(cities.reduce((s, c) => s + c.aqi, 0) / cities.length) : 0;
-  const severeCount = cities.filter(c => c.statusColor === 'severe').length;
+  const severeCount = cities.filter(c => c.statusColor === 'hazardous' || c.statusColor === 'very_unhealthy').length;
   const worstCity = cities[0];
   const bestCity = cities[cities.length - 1];
   const o3 = currentData?.ozone ?? 0;
@@ -61,7 +61,7 @@ export default function AIInsights() {
       icon: 'health_and_safety',
       title: 'Health Impact Assessment',
       content: avgAqi > 100
-        ? `At the national average AQI of ${avgAqi}, sensitive groups across India should minimize outdoor exposure. Schools in cities with AQI > 150 should consider indoor activity alternatives. ${worstCity?.name}'s population of ${worstCity?.population} is at highest risk.`
+        ? `At the national average AQI of ${avgAqi}, sensitive groups across India should minimize outdoor exposure. Schools in cities with AQI > 150 should consider indoor activity alternatives. ${worstCity?.name} is currently at highest risk.`
         : `National average AQI of ${avgAqi} poses minimal health risk. Normal outdoor activities can continue across most cities.`,
       tags: ['Health Advisory', 'Population Impact'],
       severity: avgAqi > 150 ? 'high' : avgAqi > 100 ? 'medium' : 'normal',
@@ -77,7 +77,7 @@ export default function AIInsights() {
       icon: 'lightbulb',
       title: 'Recommended National Interventions',
       content: severeCount > 0
-        ? `Priority: Issue health advisories in ${cities.filter(c => c.statusColor === 'severe').map(c => c.name).join(', ')}. Activate Graded Response Action Plan (GRAP) measures in NCR if Delhi AQI exceeds 200. Consider odd-even traffic restrictions.`
+        ? `Priority: Issue health advisories in ${cities.filter(c => c.statusColor === 'hazardous' || c.statusColor === 'very_unhealthy').slice(0,3).map(c => c.name).join(', ')}. Activate Graded Response Action Plan (GRAP) measures in NCR if Delhi AQI exceeds 200. Consider odd-even traffic restrictions.`
         : 'Continue routine monitoring across all stations. Schedule next sensor calibration cycle. No emergency interventions required.',
       tags: ['Action Plan', 'GRAP', 'Policy'],
       severity: severeCount > 0 ? 'high' : 'normal',
@@ -94,7 +94,7 @@ export default function AIInsights() {
     <main className="flex-1 p-4 md:p-8 pb-24 md:pb-8 max-w-5xl mx-auto w-full space-y-6">
       <div>
         <h2 style={{ fontFamily: 'Outfit, sans-serif', fontSize: 36, fontWeight: 700, letterSpacing: '-0.02em' }} className="text-on-surface">AI Insights</h2>
-        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 15 }} className="text-on-surface-variant mt-1">Gemini-powered analysis of India's environmental data across {INDIAN_CITIES.length} cities.</p>
+        <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 15 }} className="text-on-surface-variant mt-1">Gemini-powered analysis of India's environmental data across {cities.length} stations.</p>
       </div>
 
       {/* AI Status */}

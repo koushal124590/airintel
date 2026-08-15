@@ -1,32 +1,93 @@
-# React + TypeScript + Vite
+<div align="center">
+  <img src="https://img.shields.io/badge/AirIntel-CleanAir%20Sentinel-005ac1?style=for-the-badge&logo=air&logoColor=white" alt="AirIntel Logo" />
+  <h1 align="center">AirIntel - CleanAir Sentinel</h1>
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+  <p align="center">
+    <strong>Municipal AI Platform for Environmental Intelligence</strong>
+    <br />
+    <br />
+    <a href="https://github.com/your-username/airintel/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/your-username/airintel/issues">Request Feature</a>
+  </p>
+</div>
 
-Currently, two official plugins are available:
+<details open>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#license">License</a></li>
+  </ol>
+</details>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## About The Project
 
-## React Compiler
+**AirIntel - CleanAir Sentinel** is a modern, responsive web application designed for municipal governments to monitor, predict, and manage urban air quality using AI models (e.g., Gemini). It provides actionable insights and forecasts to help city administrators intervene before pollution reaches critical levels.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Built With
 
-## Expanding the Oxlint configuration
+* [![React][React.js]][React-url]
+* [![Vite][Vite.js]][Vite-url]
+* [![TailwindCSS][TailwindCSS]][Tailwind-url]
+* [![TypeScript][TypeScript]][TypeScript-url]
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Getting Started
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+To get a local copy up and running, follow these simple steps.
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### Prerequisites
+
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
+
+### Installation
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/your-username/airintel.git
+   ```
+2. Install NPM packages
+   ```sh
+   npm install
+   ```
+3. Run the development server
+   ```sh
+   npm run dev
+   ```
+
+## Features
+
+- 📊 **Real-time Dashboard:** Track current AQI, high-risk zones, and AI model confidence levels at a glance.
+- 🔮 **24-Hour AI Pollution Forecast:** Interactive predictive charting that highlights incoming pollution spikes.
+- 🤖 **Gemini AI Insights:** Automated reasoning summarizing complex environmental and traffic data into simple, actionable alerts.
+- 🗺️ **Neighborhood Risk Map:** A simulated, geospatial view of city zones, allowing hyper-local interventions like dust-suppression deployment.
+- 📱 **Mobile-Ready:** Fully responsive interface featuring a mobile shell navigation system.
+
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+[React-url]: https://reactjs.org/
+[Vite.js]: https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E
+[Vite-url]: https://vitejs.dev/
+[TailwindCSS]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
+[Tailwind-url]: https://tailwindcss.com/
+[TypeScript]: https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white
+[TypeScript-url]: https://www.typescriptlang.org/

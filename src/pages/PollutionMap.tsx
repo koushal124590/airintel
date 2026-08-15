@@ -16,11 +16,13 @@ let DefaultIcon = L.icon({
 L.Marker.prototype.options.icon = DefaultIcon;
 
 const ZONES = [
-  { id: 'N1', name: 'Northern Industrial', lat: 28.4900, lng: 77.5100 },
-  { id: 'S4', name: 'South Residential', lat: 28.4600, lng: 77.4950 },
-  { id: 'C2', name: 'Central Business District', lat: 28.4750, lng: 77.5000 },
-  { id: 'E1', name: 'Eastern Tech Park', lat: 28.4800, lng: 77.5200 },
-  { id: 'W3', name: 'West Suburbs', lat: 28.4700, lng: 77.4800 },
+  { id: 'GN-01', name: 'Knowledge Park', lat: 28.4744, lng: 77.5040 },
+  { id: 'GN-02', name: 'Pari Chowk', lat: 28.4700, lng: 77.5100 },
+  { id: 'GN-03', name: 'Alpha Commercial', lat: 28.4800, lng: 77.5200 },
+  { id: 'GN-04', name: 'Surajpur Industrial', lat: 28.4900, lng: 77.5300 },
+  { id: 'GN-05', name: 'Jaypee Greens', lat: 28.4550, lng: 77.5150 },
+  { id: 'GN-06', name: 'Dadri Road', lat: 28.4650, lng: 77.4850 },
+  { id: 'GN-07', name: 'Omicron Sector', lat: 28.4850, lng: 77.4950 },
 ];
 
 export default function PollutionMap() {
